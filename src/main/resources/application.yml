@@ -1,0 +1,6 @@
+
+client:
+  blockchain:
+    web-socket:
+      bnb-sc:
+        url: wss://bsc-testnet.publicnode.com
