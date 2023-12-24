@@ -1,4 +1,4 @@
-package com.cryptosearcher.service.data;
+package blockchaindbcreator.service;
 
 public interface BlockchainEventMigrator {
 

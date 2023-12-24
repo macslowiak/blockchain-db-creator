@@ -1,0 +1,17 @@
+version: '3.9'
+
+services:
+  ethereum-database:
+    image: postgres:latest
+    restart: always
+    environment:
+      POSTGRES_USER: eth-user
+      POSTGRES_PASSWORD: eth-password
+      POSTGRES_DB: ethereum
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U eth-user" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    ports:
+      - "5801:5432"

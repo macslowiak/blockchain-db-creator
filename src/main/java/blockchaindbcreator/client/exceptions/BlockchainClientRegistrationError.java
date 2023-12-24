@@ -1,4 +1,4 @@
-package com.cryptosearcher.client.exceptions;
+package blockchaindbcreator.client.exceptions;
 
 public class BlockchainClientRegistrationError extends RuntimeException{
 

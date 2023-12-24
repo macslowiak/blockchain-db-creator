@@ -1,7 +1,7 @@
-package com.cryptosearcher.client;
+package blockchaindbcreator.client;
 
-import com.cryptosearcher.client.exceptions.BlockchainClientRegistrationError;
-import com.cryptosearcher.client.properties.BlockchainClientConfiguration;
+import blockchaindbcreator.client.exceptions.BlockchainClientRegistrationError;
+import blockchaindbcreator.client.properties.BlockchainClientConfiguration;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.web3j.protocol.Web3j;
@@ -22,14 +22,14 @@ public abstract class BlockchainWebSocketClient {
 
     protected Web3j buildWeb3j() {
         try {
-            log.info("Registering blockchain client on: " + clientConfiguration.getUrl());
+            log.info(STR."Registering blockchain client on: \{clientConfiguration.getUrl()}");
             WebSocketService ws = new WebSocketService(clientConfiguration.getUrl(), true);
             ws.connect();
             return Web3j.build(ws);
         } catch (Exception exception) {
             throw new BlockchainClientRegistrationError(clientConfiguration.getUrl(), exception);
         } finally {
-            log.info("Blockchain client registered on: " + clientConfiguration.getUrl());
+            log.info(STR."Blockchain client registered on: \{clientConfiguration.getUrl()}");
         }
     }
 }

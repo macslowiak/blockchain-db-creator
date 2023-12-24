@@ -1,6 +1,1 @@
-
-client:
-  blockchain:
-    web-socket:
-      bnb-sc:
-        url: wss://bsc-testnet.publicnode.com
+spring.profiles.active: @spring.profiles.active@

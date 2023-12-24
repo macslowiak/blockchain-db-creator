@@ -1,7 +1,10 @@
-package com.cryptosearcher.service.data.impl;
+package blockchaindbcreator.service.impl;
 
-import com.cryptosearcher.service.data.BlockchainEventListener;
+import blockchaindbcreator.service.BlockchainEventListener;
+import org.springframework.context.annotation.Profile;
 
+
+@Profile("aa")
 public class BnbSmartChainEventListener implements BlockchainEventListener {
 
     @Override

@@ -1,0 +1,16 @@
+client:
+  blockchain:
+    web-socket:
+      ethereum:
+        url: wss://bsc-testnet.publicnode.com
+datasource:
+  ethereum:
+    url: jdbc:postgresql://localhost:5801/ethereum
+    username: eth-user
+    password: eth-password
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      connection-timeout: 10000
+      maximum-pool-size: 20
+      minimum-idle: 1
+      pool-name: ethereum-db-pool
