@@ -1,6 +1,7 @@
 package blockchaindbcreator.configuration;
 
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.orm.jpa.EntityManagerFactoryBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,6 +13,7 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.sql.DataSource;
+import java.util.Map;
 
 @Profile("ethereum")
 @Configuration
@@ -23,11 +25,25 @@ import javax.sql.DataSource;
 )
 public class EthereumDbConfiguration {
 
+    @Value("${datasource.ethereum.hibernate.show-sql}")
+    private String showSql;
+
+    @Value("${datasource.ethereum.hibernate.order-inserts}")
+    private String orderInserts;
+
+    @Value("${datasource.ethereum.hibernate.jdbc-batch-size}")
+    private Integer batchSize;
+
     @Bean
     public LocalContainerEntityManagerFactoryBean ethereumEntityManager(
             @Qualifier("ethereumDataSource") DataSource dataSource, EntityManagerFactoryBuilder builder) {
         return builder
                 .dataSource(dataSource)
+                .properties(Map.of(
+                        "hibernate.jdbc.batch_size", batchSize,
+                        "hibernate.order_inserts", orderInserts,
+                        "hibernate.show_sql", showSql
+                ))
                 .packages("blockchaindbcreator.data.ethereum")
                 .build();
     }

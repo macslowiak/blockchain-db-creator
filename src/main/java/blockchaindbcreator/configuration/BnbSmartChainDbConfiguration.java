@@ -1,6 +1,7 @@
 package blockchaindbcreator.configuration;
 
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.orm.jpa.EntityManagerFactoryBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,6 +14,7 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.sql.DataSource;
+import java.util.Map;
 
 @Profile("bnbsc")
 @Configuration
@@ -24,12 +26,26 @@ import javax.sql.DataSource;
 )
 public class BnbSmartChainDbConfiguration {
 
+    @Value("${datasource.bnbsc.hibernate.show-sql}")
+    private String showSql;
+
+    @Value("${datasource.bnbsc.hibernate.order-inserts}")
+    private String orderInserts;
+
+    @Value("${datasource.bnbsc.hibernate.jdbc-batch-size}")
+    private Integer batchSize;
+
     @Bean
     @Primary
     public LocalContainerEntityManagerFactoryBean bnbSmartChainEntityManager(
             @Qualifier("bnbSmartChainDataSource") DataSource dataSource, EntityManagerFactoryBuilder builder) {
         return builder
                 .dataSource(dataSource)
+                .properties(Map.of(
+                        "hibernate.jdbc.batch_size", batchSize,
+                        "hibernate.order_inserts", orderInserts,
+                        "hibernate.show_sql", showSql
+                ))
                 .packages("blockchaindbcreator.data.bnbsc")
                 .build();
     }

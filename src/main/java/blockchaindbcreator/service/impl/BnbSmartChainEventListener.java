@@ -4,7 +4,7 @@ import blockchaindbcreator.service.BlockchainEventListener;
 import org.springframework.context.annotation.Profile;
 
 
-@Profile("aa")
+@Profile("bnbsc")
 public class BnbSmartChainEventListener implements BlockchainEventListener {
 
     @Override

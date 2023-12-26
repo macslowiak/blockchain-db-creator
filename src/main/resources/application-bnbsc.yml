@@ -1,8 +1,10 @@
-client:
-  blockchain:
-    web-socket:
-      bnb-sc:
+blockchain:
+  bnb-sc:
+    client:
+      web-socket:
         url: wss://bsc-testnet.publicnode.com
+    migrator:
+      block-interval-size: 50
 datasource:
   bnb-sc:
     url: jdbc:postgresql://localhost:5800/bnb-sc
@@ -14,3 +16,7 @@ datasource:
       maximum-pool-size: 20
       minimum-idle: 1
       pool-name: bnb-sc-db-pool
+    hibernate:
+      order-inserts: true
+      jdbc-batch-size: 100
+      show-sql: false

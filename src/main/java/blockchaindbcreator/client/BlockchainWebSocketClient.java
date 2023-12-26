@@ -5,7 +5,11 @@ import blockchaindbcreator.client.properties.BlockchainClientConfiguration;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.web3j.protocol.Web3j;
+import org.web3j.protocol.core.DefaultBlockParameterName;
 import org.web3j.protocol.websocket.WebSocketService;
+
+import java.io.IOException;
+import java.math.BigInteger;
 
 
 @Slf4j
@@ -18,6 +22,14 @@ public abstract class BlockchainWebSocketClient {
     protected BlockchainWebSocketClient(BlockchainClientConfiguration clientConfiguration) {
         this.clientConfiguration = clientConfiguration;
         this.web3j = buildWeb3j();
+    }
+
+    public BigInteger getLatestBlockNumber() throws IOException {
+        return web3j
+                .ethGetBlockByNumber(DefaultBlockParameterName.LATEST, false)
+                .send()
+                .getBlock()
+                .getNumber();
     }
 
     protected Web3j buildWeb3j() {
