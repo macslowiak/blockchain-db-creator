@@ -9,7 +9,7 @@ services:
       POSTGRES_PASSWORD: bnb-sc-password
       POSTGRES_DB: bnb-sc
     healthcheck:
-      test: [ "CMD-SHELL", "pg_isready -U bnb-sc-user" ]
+      test: [ "CMD-SHELL", "pg_isready -U bnb-sc-user -d bnb-sc" ]
       interval: 5s
       timeout: 5s
       retries: 5
