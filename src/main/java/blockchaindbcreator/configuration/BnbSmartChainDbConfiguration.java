@@ -1,5 +1,8 @@
 package blockchaindbcreator.configuration;
 
+import jakarta.annotation.PostConstruct;
+import lombok.RequiredArgsConstructor;
+import org.flywaydb.core.Flyway;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.orm.jpa.EntityManagerFactoryBuilder;
@@ -24,7 +27,11 @@ import java.util.Map;
         transactionManagerRef = "bnbSmartChainTransactionManager",
         basePackages = {"blockchaindbcreator.data.bnbsc"}
 )
+@RequiredArgsConstructor
 public class BnbSmartChainDbConfiguration {
+
+    @Qualifier("bnbSmartChainDataSource")
+    private final DataSource dataSource;
 
     @Value("${datasource.bnbsc.hibernate.show-sql}")
     private String showSql;
@@ -37,8 +44,7 @@ public class BnbSmartChainDbConfiguration {
 
     @Bean
     @Primary
-    public LocalContainerEntityManagerFactoryBean bnbSmartChainEntityManager(
-            @Qualifier("bnbSmartChainDataSource") DataSource dataSource, EntityManagerFactoryBuilder builder) {
+    public LocalContainerEntityManagerFactoryBean bnbSmartChainEntityManager(EntityManagerFactoryBuilder builder) {
         return builder
                 .dataSource(dataSource)
                 .properties(Map.of(
@@ -58,6 +64,15 @@ public class BnbSmartChainDbConfiguration {
         transactionManager.setEntityManagerFactory(entityManagerFactory.getObject());
 
         return transactionManager;
+    }
+
+    @PostConstruct
+    private void flywayMigration() {
+        Flyway.configure()
+                .dataSource(dataSource)
+                .locations("classpath:db/migration/bnb-smart-chain")
+                .load()
+                .migrate();
     }
 }
 

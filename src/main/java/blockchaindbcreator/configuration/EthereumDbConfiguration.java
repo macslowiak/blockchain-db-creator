@@ -1,5 +1,8 @@
 package blockchaindbcreator.configuration;
 
+import jakarta.annotation.PostConstruct;
+import lombok.RequiredArgsConstructor;
+import org.flywaydb.core.Flyway;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.orm.jpa.EntityManagerFactoryBuilder;
@@ -23,7 +26,11 @@ import java.util.Map;
         transactionManagerRef = "ethereumTransactionManager",
         basePackages = {"blockchaindbcreator.data.ethereum"}
 )
+@RequiredArgsConstructor
 public class EthereumDbConfiguration {
+
+    @Qualifier("bnbSmartChainDataSource")
+    private final DataSource dataSource;
 
     @Value("${datasource.ethereum.hibernate.show-sql}")
     private String showSql;
@@ -35,8 +42,7 @@ public class EthereumDbConfiguration {
     private Integer batchSize;
 
     @Bean
-    public LocalContainerEntityManagerFactoryBean ethereumEntityManager(
-            @Qualifier("ethereumDataSource") DataSource dataSource, EntityManagerFactoryBuilder builder) {
+    public LocalContainerEntityManagerFactoryBean ethereumEntityManager(EntityManagerFactoryBuilder builder) {
         return builder
                 .dataSource(dataSource)
                 .properties(Map.of(
@@ -56,6 +62,13 @@ public class EthereumDbConfiguration {
 
         return transactionManager;
     }
+
+    @PostConstruct
+    private void flywayMigration() {
+        Flyway.configure()
+                .dataSource(dataSource)
+                .locations("classpath:db/migration/ethereum")
+                .load()
+                .migrate();
+    }
 }
-
-

@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Profile;
 
 @Profile("bnbsc")
 @Configuration
-@ConfigurationProperties(prefix = "blockchain.ethereum.client.web-socket")
+@ConfigurationProperties(prefix = "blockchain.bnb-sc.client.web-socket")
 public class BnbSmartChainWebSocketClientConfiguration extends BlockchainClientConfiguration {
 
 }
